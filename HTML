@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+	<head>
+		<title>
+			File Deadline Organizer
+		</title>
+
+			<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+			<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+			<meta name="description" content="NJDEP DLUR File Review SOP">
+			<meta name="keywords" content="NJDEP,DLUR,File,Tracker">
+			<meta name="author" content="Kevin W. Burns">
+			<style>
+				html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+			</style>
+
+			<script type='text/javascript' src='https://code.jquery.com/jquery-1.5.js'></script>
+
+			<script>
+				function deleteRow(row)
+					{
+					    var i=row.parentNode.parentNode.rowIndex;
+    					document.getElementById('POITable').deleteRow(i);
+					}
+
+
+					function insRow()
+					{
+					    var x=document.getElementById('POITable');
+					       // deep clone the targeted row
+					    var new_row = x.rows[1].cloneNode(true);
+					       // get the total number of rows
+					    var len = x.rows.length;
+					       // set the innerHTML of the first row 
+					    new_row.cells[0].innerHTML = len;
+
+					       // grab the input from the first cell and update its ID and value
+					    var inp1 = new_row.cells[1].getElementsByTagName('input')[0];
+						    inp1.id += len;
+						    inp1.value = '';
+
+					       // grab the input from the first cell and update its ID and value
+					    var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
+						    inp2.id += len;
+						    inp2.value = '';
+
+					       // append the new row to the table
+					    x.appendChild( new_row );
+					}
+			</script>
+
+			<script>
+function sortRow(){
+    
+    var sort = [].sort;
+    
+    return function(comparator, getSortable) {
+        
+        getSortable = getSortable || function(){return this;};
+        
+        var placements = this.map(function(){
+            
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+                
+                // Since the element itself will change position, we have
+                // to have some way of storing it's original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+            
+            return function() {
+                
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+                
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+                
+            };
+            
+        });
+       
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+        
+    };
+    
+})();
+			</script>
+
+	</head>
+
+	<body>
+		<form>
+			<div id="POItablediv">
+			
+			<br/>
+			<br/>
+			<table id="POITable" border="1">
+				<tr>
+            				<td>POI</td>
+				        <td>Project Manager</td>
+				        <td>File/Project Interest No.</td>
+				        <td>Applicant Name</td>
+			                <td>20<sup>th</sup> Day Deadline</td>
+				        <td>30<sup>th</sup> Day Deadline</td>
+            				<td>45<sup>th</sup> Day Deadline</td>
+            				<td>60<sup>th</sup> Day Deadline</td>
+            				<td>90<sup>th</sup> Day Deadline</td>
+            				<td>120<sup>th</sup> Day Deadline</td>
+            				<td>180<sup>th</sup> Day Deadline</td>
+            				<td style="border:transparent";><input type="button" id="addPOIbutton" value="Sort Files" onclick="sortRow();"/></td>
+            				<td style="border:transparent";>&nbsp;</td>
+        			</tr>
+        			<tr>
+            				<td>1</td>
+            				<td style="border:transparent";><input size=25 type="text" id="pmBox"/></td>
+            				<td style="border:transparent";><input size=25 type="text" id="poiBox"/></td>
+            				<td style="border:transparent";><input size=25 type="text" id="applicantBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="20thBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="30thBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="45thBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="60thBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="90thBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="120thBox"/></td>
+            				<td style="border:transparent";><input size=25 type="date" id="180thBox"/></td>
+            				<td style="border:transparent";><input type="button" id="addmorePOIbutton" value="Add Row" onclick="insRow()"/></td>
+            				<td style="border:transparent";><input type="button" id="delPOIbutton" value="Delete" onclick="deleteRow(this)"/></td>
+        			</tr>
+    			</table>
+		</form>
+	</body>
+
+</html>
